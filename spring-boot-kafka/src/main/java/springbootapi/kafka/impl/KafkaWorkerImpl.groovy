@@ -26,6 +26,7 @@ class KafkaWorkerImpl implements KafkaWorker {
 
     private final static String TOPIC = "my-topic"
     private final static String BOOTSTRAP_SERVERS = "kafka-try.kafka-project-1.svc:9092"
+    //private final static String BOOTSTRAP_SERVERS = "localhost:9092"
 
 
 
@@ -71,7 +72,12 @@ class KafkaWorkerImpl implements KafkaWorker {
 
 
             for(int i = 0; i < messageAmount; i++){
-                producer.send(new ProducerRecord<String, String>("my-topic", Integer.toString(i), Integer.toString(i)))
+
+                ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("my-topic", Integer.toString(i), Integer.toString(i))
+
+                System.out.println("Sending message: " +producerRecord)
+
+                producer.send(producerRecord)
             }
             System.out.println("Kafka Producer sent messages")
 
@@ -100,7 +106,7 @@ class KafkaWorkerImpl implements KafkaWorker {
 
         Properties props = new Properties();
         props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
-        props.put("group.id", "test");
+        //props.put("group.id", "test");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("session.timeout.ms", "30000");
@@ -111,6 +117,7 @@ class KafkaWorkerImpl implements KafkaWorker {
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(100)
             for (ConsumerRecord<String, String> record : records)
+                System.out.println("CONSUMING MESSAGE: "+record)
                 System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
         }
 

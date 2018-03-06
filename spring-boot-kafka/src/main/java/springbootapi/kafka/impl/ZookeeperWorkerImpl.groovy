@@ -32,9 +32,10 @@ class ZookeeperWorkerImpl implements ZookeeperWorker {
 
         // starts one zookeeper server on the zookeeper container
         // zookeeperConnect is HOSTNAME:PORT that the zookeeper instance is running on
-        String zookeeperConnect = "zookeeper-master.kafka-project-1.svc:2181";
-        int sessionTimeoutMs = 10 * 1000;
-        int connectionTimeoutMs = 8 * 1000;
+        //String zookeeperConnect = "localhost:2181";
+       String zookeeperConnect = "zookeeper-master.kafka-project-1.svc:2181";
+        int sessionTimeoutMs = 20 * 1000;
+        int connectionTimeoutMs = 20 * 1000;
 
         String topic = "my-topic";
         int partitions = 1;
