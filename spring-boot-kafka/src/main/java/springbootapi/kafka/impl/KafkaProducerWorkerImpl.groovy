@@ -13,12 +13,12 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 import org.apache.kafka.common.serialization.Deserializer.*
 import org.springframework.stereotype.Component
-import springbootapi.kafka.KafkaWorker
+import springbootapi.kafka.KafkaProducerWorker
 
 
 
 @Component
-class KafkaWorkerImpl implements KafkaWorker {
+class KafkaProducerWorkerImpl implements KafkaProducerWorker {
 
 
     // declare a kafka producer instance
@@ -96,39 +96,6 @@ class KafkaWorkerImpl implements KafkaWorker {
         }
 
     }
-
-
-
-
-    boolean initializeConsumer(){
-
-
-
-        Properties props = new Properties();
-        props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
-        props.put("group.id", "test");
-        props.put("enable.auto.commit", "true");
-        props.put("auto.commit.interval.ms", "1000");
-        props.put("session.timeout.ms", "40000");
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList(TOPIC))
-        while (true) {
-            ConsumerRecords<String, String> records = consumer.poll(100)
-            for (ConsumerRecord<String, String> record : records)
-                System.out.println("CONSUMING MESSAGE: "+record)
-                System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
-        }
-
-
-
-
-
-
-    }
-
-
 
 
 

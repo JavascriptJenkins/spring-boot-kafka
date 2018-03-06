@@ -3,19 +3,17 @@ package springbootapi.kafka.controllers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import springbootapi.kafka.KafkaWorker
+import springbootapi.kafka.KafkaProducerWorker
 
 
 @RestController
-@RequestMapping("/Kafka/")
-class KafkaController {
-
-
+@RequestMapping("/KafkaProducer/")
+class KafkaProducerController {
 
 
 
     @Autowired
-    KafkaWorker kafkaWorker
+    KafkaProducerWorker kafkaProducerWorker
 
 
 
@@ -26,7 +24,7 @@ class KafkaController {
 
         System.out.println("kafkaWorker.initializeProducer(): ");
 
-        return kafkaWorker.initializeProducer()
+        return kafkaProducerWorker.initializeProducer()
     }
 
 
@@ -37,19 +35,9 @@ class KafkaController {
 
         System.out.println("kafkaWorker.sendMessage(): ");
 
-        return kafkaWorker.sendMessage(10)
+        return kafkaProducerWorker.sendMessage(10)
     }
 
-
-
-    @RequestMapping("initializeConsumer")
-    boolean initializeConsumer(){
-
-
-        System.out.println("kafkaWorker.initializeConsumer(): ");
-
-        return kafkaWorker.initializeConsumer()
-    }
 
 
 
