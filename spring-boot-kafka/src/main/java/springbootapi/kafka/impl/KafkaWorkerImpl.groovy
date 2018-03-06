@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.deser.std.NumberDeserializers
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerConfig
+import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
+import org.apache.kafka.common.serialization.StringSerializer
+import org.apache.kafka.common.serialization.Deserializer.*
 import org.springframework.stereotype.Component
 import springbootapi.kafka.KafkaWorker
 
@@ -95,86 +98,30 @@ class KafkaWorkerImpl implements KafkaWorker {
 
 
 
-
-        runConsumer()
-
-
-
-
-
-
-
-    }
-
-
-
-    private static void runConsumer() throws InterruptedException {
-        final Consumer<Long, String> consumer = createConsumer();
-
-        final int giveUp = 100;   int noRecordsCount = 0;
-
+        Properties props = new Properties();
+        props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
+        props.put("group.id", "test");
+        props.put("enable.auto.commit", "true");
+        props.put("auto.commit.interval.ms", "1000");
+        props.put("session.timeout.ms", "30000");
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Arrays.asList("my-topic"))
         while (true) {
-            final ConsumerRecords<Long, String> consumerRecords = consumer.poll(1000)
-
-
-            if (consumerRecords.count()==0) {
-                noRecordsCount++;
-                if (noRecordsCount > giveUp) break;
-                else continue;
-            }
-
-
-//            for (String element : array) {
-//                System.out.println("Element: " + element);
-//            }
-
-
-            System.println("found records: " +consumerRecords)
-
-//            for(int i=0; i< consumerRecords.count(); i++){
-//
-//                String value = consumerRecords.
-//                String key = consumerRecords
-//
-//            }
-//
-//
-//            consumerRecords.forEach(record --> {
-//                System.out.printf("Consumer Record:(%d, %s, %d, %d)\n",
-//                        record.key(), record.value(),
-//                        record.partition(), record.offset());
-//            })
-
-            consumer.commitAsync()
+            ConsumerRecords<String, String> records = consumer.poll(100)
+            for (ConsumerRecord<String, String> record : records)
+                System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
         }
 
 
 
 
-        consumer.close()
-        System.out.println("CONSUMER DONE RUNNING")
+
+
     }
 
 
-    private static Consumer<Long, String> createConsumer() {
-        final Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                BOOTSTRAP_SERVERS);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG,
-                "KafkaExampleConsumer");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                NumberDeserializers.LongDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
-
-        // Create the consumer using props.
-        final Consumer<Long, String> consumer =
-                new KafkaConsumer<>(props);
-
-        // Subscribe to the topic.
-        consumer.subscribe(Collections.singletonList(TOPIC));
-        return consumer;
-    }
 
 
 
