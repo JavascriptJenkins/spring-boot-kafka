@@ -25,7 +25,7 @@ class KafkaProducerWorkerImpl implements KafkaProducerWorker {
     Producer<String, String> producer
 
     private final static String TOPIC = "my-topic"
-    private final static String BOOTSTRAP_SERVERS = "kafka-try.kafka-project-1.svc:9092"
+    private final static String BOOTSTRAP_SERVERS = "http://kafka-try-kafka-project-1.b9ad.pro-us-east-1.openshiftapps.com:9092"
     //private final static String BOOTSTRAP_SERVERS = "localhost:9092"
 
 
