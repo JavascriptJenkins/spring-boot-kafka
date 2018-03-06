@@ -22,7 +22,8 @@ class KafkaWorkerImpl implements KafkaWorker {
     boolean initializeProducer() {
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092")
+        // Connect to the kafka host HOST:PORT  (9092 is likely the port)
+        props.put("bootstrap.servers", "kafka-try.kafka-project-1.svc:9092")
         props.put("acks", "all")
         props.put("retries", 3)
         props.put("batch.size", 16384)
