@@ -73,7 +73,7 @@ class KafkaWorkerImpl implements KafkaWorker {
 
             for(int i = 0; i < messageAmount; i++){
 
-                ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("my-topic", Integer.toString(i), Integer.toString(i))
+                ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(TOPIC, Integer.toString(i), Integer.toString(i))
 
                 System.out.println("Sending message: " +producerRecord)
 
@@ -106,14 +106,14 @@ class KafkaWorkerImpl implements KafkaWorker {
 
         Properties props = new Properties();
         props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
-        //props.put("group.id", "test");
+        props.put("group.id", "test");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
-        props.put("session.timeout.ms", "30000");
+        props.put("session.timeout.ms", "3000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList("my-topic"))
+        consumer.subscribe(Arrays.asList(TOPIC))
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(100)
             for (ConsumerRecord<String, String> record : records)
