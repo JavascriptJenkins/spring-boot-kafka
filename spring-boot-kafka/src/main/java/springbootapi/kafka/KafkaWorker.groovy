@@ -14,6 +14,8 @@ interface KafkaWorker {
 
     boolean initializeProducer()
 
+    boolean initializeConsumer()
+
 
     boolean sendMessage(int messageAmount)
 

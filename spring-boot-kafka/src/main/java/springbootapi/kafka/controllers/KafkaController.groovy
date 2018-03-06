@@ -42,6 +42,18 @@ class KafkaController {
 
 
 
+    @RequestMapping("initializeConsumer")
+    boolean initializeConsumer(){
+
+
+        System.out.println("kafkaWorker.initializeConsumer(): ");
+
+        return kafkaWorker.initializeConsumer()
+    }
+
+
+
+
 
 
 
