@@ -71,6 +71,25 @@ class KafkaProducerWorkerImpl implements KafkaProducerWorker {
 
         try{
 
+            Properties props = new Properties();
+            // Connect to the kafka host HOST:PORT  (9092 is likely the port)
+            props.put("bootstrap.servers", BOOTSTRAP_SERVERS)
+            props.put("acks", "all")
+            props.put("retries", 3)
+            props.put("batch.size", 16384)
+            props.put("request.timeout.ms", 3000)
+            props.put("linger.ms", 1)
+            props.put("buffer.memory", 33554432)
+            props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+            props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+
+
+
+
+            producer = new KafkaProducer<>(props)
+            System.out.println("Kafka Producer Initialized")
+
+
 //
 //            for(int i = 0; i < messageAmount; i++){
 
