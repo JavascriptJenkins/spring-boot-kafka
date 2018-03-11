@@ -32,12 +32,13 @@ class KafkaConsumerWorkerImpl implements KafkaConsumerWorker {
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Arrays.asList(TOPIC))
-        while (true) {
-            ConsumerRecords<String, String> records = consumer.poll(100)
-            for (ConsumerRecord<String, String> record : records)
-                System.out.println("CONSUMING MESSAGE: " + record)
-            System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
-        }
+
+
+
+        ConsumerRecords<String, String> records = consumer.poll(100)
+        for (ConsumerRecord<String, String> record : records)
+            System.out.println("CONSUMING MESSAGE: " + record)
+//            System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
 
 
     }
