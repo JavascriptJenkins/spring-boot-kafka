@@ -70,15 +70,15 @@ class KafkaProducerWorkerImpl implements KafkaProducerWorker {
 
         try{
 
+//
+//            for(int i = 0; i < messageAmount; i++){
 
-            for(int i = 0; i < messageAmount; i++){
-
-                ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(TOPIC, Integer.toString(i), Integer.toString(i))
+                ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(TOPIC, Integer.toString(12345), Integer.toString(6789))
 
                 System.out.println("Sending message: " +producerRecord)
 
                 producer.send(producerRecord)
-            }
+//            }
             System.out.println("Kafka Producer sent messages")
 
             producer.close()
